@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For You ❤️</title>
+
+<style>
+
+/* ------------------ WELCOME PAGE STYLES ------------------ */
+
+#welcome {
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+#welcome canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#welcomeText {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    color: red;
+    font-size: 35px;
+    font-weight: bold;
+    transform: translateY(-50%);
+    text-shadow: 0 0 20px red;
+    opacity: 0;
+    animation: fadeIn 3s forwards 2s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* ------------------ YOUR ORIGINAL WEBSITE CSS ------------------ */
+
+/* THEME */
+:root{
+  --bg: linear-gradient(135deg,#ff758c,#ff7eb3);
+  --text:#fff;
+  --card:rgba(255,255,255,0.12);
+}
+[data-theme="dark"]{
+  --bg: linear-gradient(135deg,#1e1e1e,#111);
+  --text:#eee;
+  --card:rgba(255,255,255,0.05);
+}
+
+body{
+  margin:0;
+  font-family:"Poppins",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  padding:20px;
+}
+
+.btn{
+  padding:10px 18px;
+  border-radius:50px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  background:var(--card);
+  backdrop-filter:blur(8px);
+  color:var(--text);
+  margin:4px;
+}
+
+h1{text-shadow:0 0 10px rgba(0,0,0,0.4)}
+
+.card{
+  background:var(--card);
+  margin:20px auto;
+  padding:25px;
+  width:90%;
+  max-width:600px;
+  border-radius:18px;
+  backdrop-filter:blur(10px);
+}
+
+.slideshow{
+  width:100%;
+  max-width:350px;
+  margin:20px auto;
+  overflow:hidden;
+  border-radius:18px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.3);
+}
+.slide{display:none;width:100%}
+
+.hearts{
+  pointer-events:none;
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+}
+.heart{
+  position:absolute;
+  font-size:22px;
+  animation:float 5s linear forwards;
+  opacity:0.8;
+}
+@keyframes float{
+  0%{transform:translateY(0);opacity:1}
+  100%{transform:translateY(-800px);opacity:0}
+}
+
+#gallery-section{
+  display:none;
+  padding:20px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:12px;
+}
+.grid img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+#lightbox{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+#lightbox img{
+  max-width:90%;
+  max-height:85%;
+  border-radius:12px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ------------------ WELCOME PAGE ------------------ -->
+
+<div id="welcome">
+    <canvas id="welcomeCanvas"></canvas>
+    <div id="welcomeText">I love you my sweetheart ❤️</div>
+</div>
+
+<!-- ------------------ FLOATING HEARTS ------------------ -->
+<div class="hearts" id="hearts"></div>
+
+<!-- ------------------ ORIGINAL WEBSITE CONTENT ------------------ -->
+
+<header>
+  <h1>For My Love, HER NAME ❤️</h1>
+  <div>
+    <button class="btn" id="darkBtn">🌙 Dark</button>
+    <button class="btn" id="musicBtn">▶ Music</button>
+    <button class="btn" onclick="openGallery()">🖼 Gallery</button>
+    <button class="btn" onclick="closeGallery()" id="backBtn" style="display:none">← Back</button>
+  </div>
+</header>
+
+<div id="main-page">
+
+  <div class="card">
+    <h2>You make my world beautiful 💖</h2>
+    <p>This small website is only for you…</p>
+
+    <div class="slideshow">
+      <img class="slide" src="https://via.placeholder.com/400x600?text=Photo+1">
+      <img class="slide" src="https://via.placeholder.com/400x600?text=Photo+2">
+      <img class="slide" src="https://via.placeholder.com/400x600?text=Photo+3">
+    </div>
+
+    <button class="btn" onclick="nextSlide()">Next Photo</button>
+    <button class="btn" onclick="showMessage()">Secret Message 💌</button>
+    <button class="btn" onclick="rainHearts()">💖 Hearts</button>
+
+    <p id="message" style="display:none;margin-top:10px;font-size:18px;"></p>
+
+    <h2 style="margin-top:25px">Proposal 💍</h2>
+    <p><b>HER NAME</b>,  
+    I don’t know what the future holds…  
+    But I know I want it with you forever ❤️</p>
+  </div>
+</div>
+
+<div id="gallery-section">
+  <h2>Our Memories 🖼️</h2>
+  <p>Tap any photo to enlarge.</p>
+
+  <div class="grid">
+    <img src="https://via.placeholder.com/400x500?text=Photo+1" onclick="openLightbox(this.src)">
+    <img src="https://via.placeholder.com/400x500?text=Photo+2" onclick="openLightbox(this.src)">
+    <img src="https://via.placeholder.com/400x500?text=Photo+3" onclick="openLightbox(this.src)">
+    <img src="https://via.placeholder.com/400x500?text=Photo+4" onclick="openLightbox(this.src)">
+    <img src="https://via.placeholder.com/400x500?text=Photo+5" onclick="openLightbox(this.src)">
+  </div>
+</div>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <img id="lightImg">
+</div>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2021/09/30/audio_d1c783fc57.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* ------------------ WELCOME PAGE SCRIPT ------------------ */
+
+let welcome = document.getElementById("welcome");
+const canvas = document.getElementById("welcomeCanvas");
+const ctx = canvas.getContext("2d");
+let w, h;
+
+function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+const particles = [];
+const particleCount = 400;
+
+function heartShape(t) {
+    return {
+        x: 16 * Math.pow(Math.sin(t), 3),
+        y: -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t))
+    };
+}
+
+for (let i = 0; i < particleCount; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const pos = heartShape(t);
+    particles.push({
+        x: w / 2,
+        y: h / 2,
+        destX: w / 2 + pos.x * 15,
+        destY: h / 2 + pos.y * 15,
+        vx: Math.random() * 3 - 1.5,
+        vy: Math.random() * 3 - 1.5,
+        size: Math.random() * 3 + 1,
+        alpha: 0
+    });
+}
+
+function animate() {
+    ctx.clearRect(0, 0, w, h);
+
+    particles.forEach(p => {
+        p.x += (p.destX - p.x) * 0.05;
+        p.y += (p.destY - p.y) * 0.05;
+        p.alpha += 0.02;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,0,0,${p.alpha})`;
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+setTimeout(() => {
+    welcome.style.display = "none";
+}, 6000);
+
+
+/* ------------------ ORIGINAL SCRIPT (UNCHANGED) ------------------ */
+
+const darkBtn = document.getElementById("darkBtn");
+darkBtn.onclick = ()=>{
+  const theme = document.documentElement.getAttribute("data-theme");
+  if(theme === "dark"){
+    document.documentElement.removeAttribute("data-theme");
+    darkBtn.textContent = "🌙 Dark";
+  } else {
+    document.documentElement.setAttribute("data-theme","dark");
+    darkBtn.textContent = "☀ Light";
+  }
+};
+
+let slideIndex = 0;
+const slides = document.getElementsByClassName("slide");
+showSlide();
+function showSlide(){
+  for(let s of slides) s.style.display="none";
+  slideIndex = (slideIndex+1)%slides.length;
+  slides[slideIndex].style.display="block";
+  setTimeout(showSlide,3000);
+}
+function nextSlide(){
+  showSlide();
+}
+
+const msgs=[
+  "You make my heart smile ❤️",
+  "Every moment with you is special 💕",
+  "You are my favourite person 💘"
+];
+let mi=0;
+function showMessage(){
+  const box=document.getElementById("message");
+  box.style.display="block";
+  box.textContent=msgs[mi];
+  mi=(mi+1)%msgs.length;
+}
+
+function rainHearts(){
+  const layer=document.getElementById("hearts");
+  for(let i=0;i<10;i++){
+    setTimeout(()=>{
+      const h=document.createElement("div");
+      h.className="heart";
+      h.textContent="💖";
+      h.style.left=Math.random()*100+"%";
+      h.style.bottom="-30px";
+      h.style.fontSize=(20+Math.random()*20)+"px";
+      layer.appendChild(h);
+      setTimeout(()=>h.remove(),5000);
+    },i*150);
+  }
+}
+
+const music=document.getElementById("music");
+const musicBtn=document.getElementById("musicBtn");
+musicBtn.onclick=()=>{
+  if(music.paused){
+    music.play();
+    musicBtn.textContent="⏸ Pause";
+  } else {
+    music.pause();
+    musicBtn.textContent="▶ Music";
+  }
+};
+
+function openGallery(){
+  document.getElementById("main-page").style.display="none";
+  document.getElementById("gallery-section").style.display="block";
+  document.getElementById("backBtn").style.display="inline-block";
+}
+
+function closeGallery(){
+  document.getElementById("main-page").style.display="block";
+  document.getElementById("gallery-section").style.display="none";
+  document.getElementById("backBtn").style.display="none";
+}
+
+function openLightbox(src){
+  document.getElementById("lightImg").src=src;
+  document.getElementById("lightbox").style.display="flex";
+}
+function closeLightbox(){
+  document.getElementById("lightbox").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
